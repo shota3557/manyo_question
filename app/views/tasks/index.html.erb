@@ -11,6 +11,9 @@
     <td><%= task.name %></td>
     <td><%= task.content %></td>
     <td><%= link_to '詳細を確認する', task_path(task.id) %></td>
+    <td><%= link_to '投稿を編集する', edit_task_path(task.id) %></td>
+    <td><%= link_to '投稿を削除する', task_path(task.id), method: :delete, data: { confirm: "本当に削除しますか？" } %></td>
+    
   </tr>
   <% end %>
 </table>
