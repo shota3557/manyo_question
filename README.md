@@ -1,0 +1,15 @@
+- User
+    - id
+    - name:string
+    - email:string
+    - password_digest:string
+- Task
+    - id
+    - user_id
+    - name:string
+    - content:text
+- Labeling
+    - task_id
+    - label_id
+-Label
+    - id
