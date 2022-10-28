@@ -9,12 +9,16 @@ class TasksController < ApplicationController
   
   def create
     @task = Task.create(task_params)
-    if @task.save
-      flash[:notice] = "投稿しました"
-      redirect_to tasks_path, notice: "投稿しました"
-    else
-      render :new  
-    end
+    if params[:back]
+      render :new
+    else  
+      if @task.save
+        flash[:notice] = "投稿しました"
+        redirect_to tasks_path
+      else
+        render :new  
+      end
+    end  
   end
   
   def show
@@ -39,11 +43,12 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.destroy
     flash[:danger] = "投稿を削除しました"
-    redirect_to tasks_path, notice: "投稿を削除しました"
+    redirect_to tasks_path
   end
 
   def confirm
     @task = Task.new(task_params)
+    render :new if @task.invalid?
   end
   
   private
