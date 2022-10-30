@@ -27,7 +27,7 @@
   ターミナル上で「 heroku buildpacks:add --index 1 heroku/nodejs」と入力
 
 4.Heroku にデプロイする
-  ターミナル上で「git push heroku ブランチ名」と入力する
+  ターミナル上で「git push heroku step2:master」と入力する
 
 5.Heroku上のアプリケーションにアクセスする
   ターミナルで「heroku open」と入力する
