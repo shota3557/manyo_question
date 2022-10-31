@@ -20,5 +20,12 @@
     <%= form.label :投稿内容 %>
     <%= form.text_area :content  %>
   </div>
+
+  <div class = "task_limit">
+    <%= form.label :終了期限 %>
+    <%= form.date_select :end_date  %>
+  </div>
+  
+
   <%= form.submit "投稿する" %>
 <% end %>
