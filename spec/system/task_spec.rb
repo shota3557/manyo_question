@@ -9,11 +9,13 @@ RSpec.describe 'タスク管理機能', type: :system do
     context 'タスクを新規作成した場合' do
       it '作成したタスクが表示される' do
         visit new_task_path
-        fill_in "task_name", with: '名前1'
-        fill_in "task_content", with: '内容1'
+        fill_in "task[name]", with: '名前1'
+        fill_in "task[content]", with: '内容1'
+        fill_in "task[end_date]", with: "002020-11-11"
         click_button '投稿する'
         expect(page).to have_content '名前1'
         expect(page).to have_content '内容1'
+        expect(page).to have_content '2020-11-11'
       end
     end
   end
