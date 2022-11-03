@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   end
   
   def index
-    if params[:task].present? && params[:status].present?
+    if params[:task].present? && params[:status].present? 
       @tasks = Task.where('name Like(?)', "%#{params[:task][:name]}%")
       @tasks = @tasks.where(status: params[:status][:name])
     elsif params[:task].present? && params[:task][:name] != ""
