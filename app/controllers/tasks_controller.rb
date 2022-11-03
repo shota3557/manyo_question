@@ -1,13 +1,22 @@
 class TasksController < ApplicationController
   def new
-      @task = Task.new
-    end
+    @task = Task.new
+  end
   
   def index
-    if params[:sort_expired]
+    if params[:task].present? && params[:status].present?
+      @tasks = Task.where('name Like(?)', "%#{params[:task][:name]}%")
+      @tasks = @tasks.where(status: params[:status][:name])
+    elsif params[:task].present? && params[:task][:name] != ""
+      @tasks = Task.where('name Like(?)', "%#{params[:task][:name]}%")
+    elsif params[:status].present? && params[:status][:name] != ""
+      @tasks = Task.where(status: params[:status][:name])
+    elsif params[:sort_expired] 
       @tasks = Task.sort_expired
+    elsif params[:rank]
+      @tasks = Task.rank
     else  
-    @tasks = Task.all.order(created_at: :desc)
+      @tasks = Task.all.order(created_at: :desc)
     end
   end
   
@@ -57,6 +66,6 @@ class TasksController < ApplicationController
   
   private
   def task_params
-    params.require(:task).permit(:name, :content, :end_date)
+    params.require(:task).permit(:name, :content, :end_date, :status, :priority)
   end
 end  
