@@ -7,4 +7,5 @@ class Task < ApplicationRecord
   scope :task_name, -> (name){ where('name Like(?)', "%#{name}%") }
   enum status: { 未着手: 1, 着手中: 2, 完成: 3 }
   enum priority: { 低い: 0, 中: 1, 高い: 2 }
+  belongs_to :user
 end
