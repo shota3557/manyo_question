@@ -5,16 +5,15 @@ class TasksController < ApplicationController
   
   def index
     if params[:task].present? && params[:task][:name].present? && params[:status].present? && params[:status][:name].present?
-      @tasks = Task.task_name(params[:task][:name])
-      @tasks = @tasks.status_name(params[:status][:name])
+      @tasks = Task.task_name(params[:task][:name]).status_name(params[:status][:name]).page(params[:page]).per(2)
     elsif params[:task].present? && params[:task][:name].present?
-      @tasks = Task.task_name(params[:task][:name])
+      @tasks = Task.task_name(params[:task][:name]).page(params[:page]).per(2)
     elsif params[:status].present? && params[:status][:name].present?
-      @tasks = Task.status_name(params[:status][:name])
+      @tasks = Task.status_name(params[:status][:name]).page(params[:page]).per(2)
     elsif params[:sort_expired]  
-      @tasks = Task.sort_expired
+      @tasks = Task.sort_expired.page(params[:page]).per(2)
     elsif params[:rank]
-      @tasks = Task.rank
+      @tasks = Task.rank.page(params[:page]).per(2)
     else  
       @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(2)
     end
