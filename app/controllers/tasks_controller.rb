@@ -16,7 +16,7 @@ class TasksController < ApplicationController
     elsif params[:rank]
       @tasks = Task.rank
     else  
-      @tasks = Task.all.order(created_at: :desc)
+      @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(2)
     end
   end
   
