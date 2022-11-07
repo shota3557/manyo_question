@@ -8,4 +8,11 @@ class Task < ApplicationRecord
   enum status: { 未着手: 1, 着手中: 2, 完成: 3 }
   enum priority: { 低い: 0, 中: 1, 高い: 2 }
   belongs_to :user
+  before_destroy :must_not_destroy_last_one_task
+
+  private
+
+  def must_not_destroy_last_one_task
+    throw(:abort) if (user.tasks - [self]).empty?
+  end
 end
