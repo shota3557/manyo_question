@@ -1,4 +1,37 @@
 <h1><%= @user.name %>のページ</h1>
+<h3>タスクの状況</h3>
 
-<p>メールアドレス: <%= @user.email %></p>
+<table>
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>投稿内容</th>
+      <th>終了期限</th>
+      <th>進捗状態</th>
+      <th>優先度</th>
+    </tr>
+  </thead>  
+  
+  <tbody>
+  <% @tasks.each do |task| %>
+  <tr>
+    <% if logged_in? && current_user.id == task.user_id %>
+    <td><%= task.name %></td>
+    <td><%= task.content %></td>
+    <td><%= task.end_date %></td>
+    <td><%= task.status %></td>
+    <td><%= task.priority %></td>
+    <td><%= link_to '詳細を確認する', task_path(task.id) %></td>
+    <td><%= link_to '投稿を編集する', edit_task_path(task.id) %></td>
+    <td><%= link_to '投稿を削除する', task_path(task.id), method: :delete, data: { confirm: "本当に削除しますか？" } %></td>
+    <% end %>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
 <%= link_to "タスク新規登録", new_task_path %>
+<%= link_to "タスク一覧へ", tasks_path %>
+<%= link_to "管理者ページへ", admin_users_path %>
