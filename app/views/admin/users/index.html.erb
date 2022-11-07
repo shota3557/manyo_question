@@ -1,0 +1,25 @@
+<h1>ユーザ一覧</h1>
+
+  <table>
+  <thead>
+    <tr>
+      <th>ユーザID</th>
+      <th>ユーザ名</th>
+      <th>タスク数</th>
+    </tr>
+  </thead>  
+  
+  <tbody>
+  <% @users.each do |user| %>
+  <tr>
+    <td><%= user.id %></td>
+    <td><%= user.name %></td>
+    <td><%= user.tasks.count %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to "新規投稿へ", new_task_path %>
