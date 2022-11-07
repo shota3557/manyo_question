@@ -5,5 +5,12 @@ class User < ApplicationRecord
 
   before_validation { email.downcase! }
   has_secure_password
-  has_many :tasks
+  has_many :tasks, dependent: :destroy
+  before_destroy :must_not_destroy_last_one_admin
+
+  private
+
+  def must_not_destroy_last_one_admin
+    throw(:abort) if self.admin
+  end
 end
