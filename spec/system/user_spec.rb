@@ -67,10 +67,28 @@ RSpec.describe 'ユーザ管理機能', type: :system do
   end
   describe '管理者機能' do
     context '管理者がログインした場合' do
-      it 'ユーザ一覧画面にアクセスできる' do
-      
+      it '管理雨せ画面にアクセスできる' do
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on '管理者ページへ'
+        expect(page).to have_content 'ユーザ一覧'
       end
       
+      context '一般ユーザがユーザ一覧画面にアクセスした場合' do
+        it 'タスク一覧画面に遷移し、「管理者以外アクセスできません」というエラーメッセージが表示される' do
+          user = FactoryBot.create(:user)
+          visit new_session_path
+          fill_in "session[email]", with: 'test@test.com'
+          fill_in "session[password]", with: 'testtest'
+          click_button 'ログインする'
+          click_on '管理者ページへ'
+          expect(page).to have_content 'ユーザ一覧'
+        end
+      end
+
       it '管理者を登録できる' do
       
       end
@@ -88,10 +106,6 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       end
     end
     
-    context '一般ユーザがユーザ一覧画面にアクセスした場合' do
-      it 'タスク一覧画面に遷移し、「管理者以外アクセスできません」というエラーメッセージが表示される' do
-      
-      end
-    end
+    
   end
 end
