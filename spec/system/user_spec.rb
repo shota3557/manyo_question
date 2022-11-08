@@ -67,7 +67,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
   end
   describe '管理者機能' do
     context '管理者がログインした場合' do
-      it '管理雨せ画面にアクセスできる' do
+      it '管理画面にアクセスできる' do
         user = FactoryBot.create(:user)
         visit new_session_path
         fill_in "session[email]", with: 'test@test.com'
