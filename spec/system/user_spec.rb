@@ -10,34 +10,58 @@ RSpec.describe 'ユーザ管理機能', type: :system do
         fill_in "user[password]", with: "testtest"
         fill_in "user[password_confirmation]", with: "testtest"
         click_button '登録する'
-        expect(page).to eq user_path(user.id)
+        expect(page).to have_content 'のページ'
       end
     end
 
     context 'ログインせずにタスク一覧画面に遷移した場合' do
       it 'ログイン画面に遷移すること' do
         visit tasks_path
-        expect(page).to eq new_session_path
+        expect(current_path).to eq new_session_path
+        expect(current_path).not_to eq tasks_path
       end
     end
   end
 
   describe 'ログイン機能' do
     context '登録済みのユーザでログインした場合' do
-      it 'タスク一覧画面に遷移し、「ログインしました」というメッセージが表示される' do
-      
+      it 'ログインし、マイページに飛べること' do
+        FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        expect(page).to have_content 'タスクの状況'
       end
       
       it '自分の詳細画面にアクセスできる' do
-      
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        expect(page).to have_content 'のページ'
       end
       
       it '他人の詳細画面にアクセスすると、タスク一覧画面に遷移する' do
-      
+        user = FactoryBot.create(:user)
+        user2 = FactoryBot.create(:second_user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        visit user_path(user2.id)
+        expect(page).to have_content '投稿一覧'
       end
       
       it 'ログアウトするとログイン画面に遷移し、「ログアウトしました」というメッセージが表示される' do
-      
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on 'ログアウト'
+        expect(page).to have_content 'ログイン画面'
       end
     end
   end
