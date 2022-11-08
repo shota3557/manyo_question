@@ -1,12 +1,26 @@
 class Admin::UsersController < ApplicationController
-  skip_before_action :login_required, only: [:new, :index, :edit, :update]
   before_action :admin_user
   def new
     @user = User.new
   end
 
+  def create
+    @user = User.new(admin_user_params)
+    if @user.save
+      session[:user_id] = @user.id
+      redirect_to admin_user_path(@user.id)
+    else
+      render :new
+    end
+  end
+
   def index
     @users = User.all.order(id: :asc)
+  end
+
+  def show
+    @user = User.find(params[:id])
+    @tasks = Task.all.includes(:user)
   end
 
   def edit
@@ -24,13 +38,13 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id]).destroy
-    flash[:danger] = "投稿を削除しました"
+    flash[:danger] = "ユーザを削除しました"
     redirect_to admin_users_path
   end
 
   private
   def admin_user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
   end
 
   def admin_user

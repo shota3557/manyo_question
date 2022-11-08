@@ -4,6 +4,7 @@ FactoryBot.define do
     email { 'test@test.com' }
     password { 'testtest' }
     password_confirmation { 'testtest' }
+    admin { 'true' }
   end 
 
   factory :second_user, class: User do
@@ -11,5 +12,6 @@ FactoryBot.define do
     email { 'test2@test.com' }
     password { 'testtest' }
     password_confirmation { 'testtest' }
+    admin { 'false' }
   end 
 end
