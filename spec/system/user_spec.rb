@@ -80,19 +80,61 @@ RSpec.describe 'ユーザ管理機能', type: :system do
       
 
       it 'ユーザの新規登録ができる' do
-      
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on '管理者ページへ'
+        click_on 'ユーザ新規登録へ'
+        fill_in "user[name]", with: 'テスト'
+        fill_in "user[email]", with: 'test100@test.com'
+        fill_in "user[password]", with: "testtest"
+        fill_in "user[password_confirmation]", with: "testtest"
+        click_button '登録する'
+        expect(page).to have_content '投稿一覧'
+
       end
       
       it 'ユーザ詳細画面にアクセスできる' do
-      
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on '管理者ページへ'
+        click_on 'ユーザの詳細画面へ'
+        expect(page).to have_content 'のページ'
       end
       
       it 'ユーザ編集画面から、自分以外のユーザを編集できる' do
-      
+        user = FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on '管理者ページへ'
+        click_on 'ユーザを編集する'
+        fill_in "user[name]", with: 'テスト3'
+        fill_in "user[email]", with: 'test3@test.com'
+        fill_in "user[password]", with: "testtest"
+        fill_in "user[password_confirmation]", with: "testtest"
+        click_button '登録する'
+        expect(page).to have_content 'ユーザ一覧'
+        
       end
       
       it 'ユーザを削除できる' do
-      
+        FactoryBot.create(:user)
+        visit new_session_path
+        fill_in "session[email]", with: 'test@test.com'
+        fill_in "session[password]", with: 'testtest'
+        click_button 'ログインする'
+        click_on '管理者ページへ'
+        click_on 'ユーザを削除する'
+        expect {
+            page.accept_confirm "本当に削除しますか？" 
+            expect(page).to have_content "ユーザを削除しました" }
       end
     end
 
