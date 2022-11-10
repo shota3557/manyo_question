@@ -15,12 +15,13 @@ class TasksController < ApplicationController
     elsif params[:rank]
       @tasks = Task.rank.page(params[:page]).per(2)
     else  
-      @tasks = Task.all.order(created_at: :desc).page(params[:page]).per(2)
+      @tasks = Task.all.includes(:user).order(created_at: :desc).page(params[:page]).per(2)
     end
   end
   
   def create
     @task = Task.create(task_params)
+    @task.user_id = current_user.id
     if params[:back]
       render :new
     else  
@@ -60,6 +61,7 @@ class TasksController < ApplicationController
 
   def confirm
     @task = Task.new(task_params)
+    @task.user_id = current_user.id
     render :new if @task.invalid?
   end
   

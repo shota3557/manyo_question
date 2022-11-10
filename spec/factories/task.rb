@@ -16,5 +16,7 @@ FactoryBot.define do
       end_date { '002022-11-11' }
       status { '未着手' }
       priority { '低い' }
+
+      association :user
     end
   end

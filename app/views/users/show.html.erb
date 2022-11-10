@@ -1,21 +1,15 @@
-<h1>投稿一覧</h1>
-
-<%= form_with(scope: :task, local: true, method: :get, url: tasks_path) do |f| %>
-  <%= f.label :検索欄 %>
-  <%= f.text_field :name %>
-  <%= select :status, :name, Task.statuses.keys.to_a, include_blank: "---"  %>
-  <%= f.submit "検索する" %>
-<% end %>  
+<h1><%= @user.name %>のページ</h1>
+<%= link_to "プロフィールを編集する", edit_user_path(@user.id) %>
+<h3>タスクの状況</h3>
 
 <table>
   <thead>
     <tr>
-      <th>投稿者</th>
       <th>タイトル</th>
       <th>投稿内容</th>
-      <th>終了期限<%= link_to '（期限順）',tasks_path(sort_expired: "true") %></th>
+      <th>終了期限</th>
       <th>進捗状態</th>
-      <th>優先度<%= link_to '（優先順）',tasks_path(rank: "true") %></th>
+      <th>優先度</th>
     </tr>
   </thead>  
   
@@ -23,7 +17,6 @@
   <% @tasks.each do |task| %>
   <tr>
     <% if logged_in? && current_user.id == task.user_id %>
-    <td><%= task.user.name %></td>
     <td><%= task.name %></td>
     <td><%= task.content %></td>
     <td><%= task.end_date %></td>
@@ -40,5 +33,6 @@
 
 <br>
 
-<%= paginate @tasks %>
-<%= link_to "新規投稿へ", new_task_path %>
+<%= link_to "タスク新規登録", new_task_path %>
+<%= link_to "タスク一覧へ", tasks_path %>
+<%= link_to "管理者ページへ", admin_users_path %>
