@@ -6,6 +6,16 @@ class User < ApplicationRecord
   before_validation { email.downcase! }
   has_secure_password
   has_many :tasks, dependent: :destroy
-  before_destroy :must_not_destroy_last_one_admin
-  
+  before_destroy :admin_cannot_delete
+  before_update :admin_cannot_update
+
+  private
+
+  def admin_cannot_delete
+    throw :abort if User.where(admin: true).count == 1 && self.admin == true
+  end
+
+  def admin_cannot_update
+    throw :abort if User.where(admin: true).count == 1 && self.saved_change_to_admin == [true, false]
+  end
 end
