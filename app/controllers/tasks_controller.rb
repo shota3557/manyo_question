@@ -4,24 +4,24 @@ class TasksController < ApplicationController
   end
   
   def index
-    if params[:task].present? && params[:status].present? 
-      @tasks = Task.where('name Like(?)', "%#{params[:task][:name]}%")
-      @tasks = @tasks.where(status: params[:status][:name])
-    elsif params[:task].present? && params[:task][:name] != ""
-      @tasks = Task.where('name Like(?)', "%#{params[:task][:name]}%")
-    elsif params[:status].present? && params[:status][:name] != ""
-      @tasks = Task.where(status: params[:status][:name])
-    elsif params[:sort_expired] 
-      @tasks = Task.sort_expired
+    if params[:task].present? && params[:task][:name].present? && params[:status].present? && params[:status][:name].present?
+      @tasks = Task.task_name(params[:task][:name]).status_name(params[:status][:name]).page(params[:page]).per(2)
+    elsif params[:task].present? && params[:task][:name].present?
+      @tasks = Task.task_name(params[:task][:name]).page(params[:page]).per(2)
+    elsif params[:status].present? && params[:status][:name].present?
+      @tasks = Task.status_name(params[:status][:name]).page(params[:page]).per(2)
+    elsif params[:sort_expired]  
+      @tasks = Task.sort_expired.page(params[:page]).per(2)
     elsif params[:rank]
-      @tasks = Task.rank
+      @tasks = Task.rank.page(params[:page]).per(2)
     else  
-      @tasks = Task.all.order(created_at: :desc)
+      @tasks = Task.all.includes(:user).order(created_at: :desc).page(params[:page]).per(2)
     end
   end
   
   def create
     @task = Task.create(task_params)
+    @task.user_id = current_user.id
     if params[:back]
       render :new
     else  
@@ -61,6 +61,7 @@ class TasksController < ApplicationController
 
   def confirm
     @task = Task.new(task_params)
+    @task.user_id = current_user.id
     render :new if @task.invalid?
   end
   
