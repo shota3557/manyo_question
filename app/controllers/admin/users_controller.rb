@@ -37,12 +37,8 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    if @user.admin == false
       @user.destroy
       flash[:danger] = "ユーザを削除しました"
-      redirect_to admin_users_path
-    else
-      flash[:danger] = "管理者は削除できません"
       redirect_to admin_users_path
     end  
   end
