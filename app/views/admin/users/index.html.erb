@@ -6,6 +6,7 @@
       <th>ユーザID</th>
       <th>ユーザ名</th>
       <th>タスク数</th>
+      <th>ユーザの種類</th>
     </tr>
   </thead>  
   
@@ -15,6 +16,7 @@
     <td><%= user.id %></td>
     <td><%= user.name %></td>
     <td><%= user.tasks.count %></td>
+    <td><%= user.admin ? '管理者':'一般ユーザ' %></td>
     <td><%= link_to 'ユーザの詳細画面へ', admin_user_path(user.id) %></td>
     <td><%= link_to 'ユーザを編集する', edit_admin_user_path(user.id) %></td>
     <td><%= link_to 'ユーザを削除する', admin_user_path(user.id), method: :delete, data: { confirm: "本当に削除しますか？" } %></td>
