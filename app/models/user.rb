@@ -7,5 +7,5 @@ class User < ApplicationRecord
   has_secure_password
   has_many :tasks, dependent: :destroy
   before_destroy :must_not_destroy_last_one_admin
-
+  
 end
