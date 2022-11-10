@@ -16,6 +16,6 @@ class User < ApplicationRecord
   end
 
   def admin_cannot_update
-    throw :abort if User.where(admin: true).count == 1 && self.saved_change_to_admin == [true, false]
+    throw :abort if User.where(admin: true).count == 1 && self.admin_change_to_be_saved == [true, false]
   end
 end
