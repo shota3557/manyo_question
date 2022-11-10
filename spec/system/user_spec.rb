@@ -92,7 +92,7 @@ RSpec.describe 'ユーザ管理機能', type: :system do
         fill_in "user[password]", with: "testtest"
         fill_in "user[password_confirmation]", with: "testtest"
         click_button '登録する'
-        expect(page).to have_content '投稿一覧'
+        expect(page).to have_content 'ユーザ一覧'
 
       end
       
