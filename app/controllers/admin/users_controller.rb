@@ -7,8 +7,7 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(admin_user_params)
     if @user.save
-      session[:user_id] = @user.id
-      redirect_to admin_user_path(@user.id)
+      redirect_to admin_users_path
     else
       render :new
     end
@@ -37,9 +36,15 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find(params[:id]).destroy
-    flash[:danger] = "ユーザを削除しました"
-    redirect_to admin_users_path
+    @user = User.find(params[:id])
+    if @user.admin == false
+      @user.destroy
+      flash[:danger] = "ユーザを削除しました"
+      redirect_to admin_users_path
+    else
+      flash[:danger] = "管理者は削除できません"
+      redirect_to admin_users_path
+    end  
   end
 
   private
