@@ -16,6 +16,7 @@
       <th>終了期限<%= link_to '（期限順）',tasks_path(sort_expired: "true") %></th>
       <th>進捗状態</th>
       <th>優先度<%= link_to '（優先順）',tasks_path(rank: "true") %></th>
+      <th>ラベル</th>
     </tr>
   </thead>  
   
@@ -29,6 +30,11 @@
     <td><%= task.end_date %></td>
     <td><%= task.status %></td>
     <td><%= task.priority %></td>
+    <td>
+      <% task.labels.each do |label| %>
+        <%= label.name %>
+      <% end %>
+    </td>
     <td><%= link_to '詳細を確認する', task_path(task.id) %></td>
     <td><%= link_to '投稿を編集する', edit_task_path(task.id) %></td>
     <td><%= link_to '投稿を削除する', task_path(task.id), method: :delete, data: { confirm: "本当に削除しますか？" } %></td>

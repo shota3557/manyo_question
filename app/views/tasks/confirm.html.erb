@@ -6,12 +6,18 @@
   <%= form.hidden_field :end_date %>
   <%= form.hidden_field :status %>
   <%= form.hidden_field :priority %>
+  <%= form.hidden_field :label_ids %>
 
   <p>タイトル：<%= @task.name %></p>
   <p>投稿内容:<%= @task.content %></p>
   <p>終了期限:<%= @task.end_date  %></p>
   <p>進捗状況:<%= @task.status %></p>
   <p>優先度:<%= @task.priority %></p>
+  <p>ラベル:
+  <% @task.labels.each do |label| %>
+    <%= label.name %>
+  <% end %>  
+</p>
 
   <%= form.submit "投稿する" %>
   <%= form.submit "戻る", name: 'back' %>
